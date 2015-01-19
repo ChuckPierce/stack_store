@@ -44,15 +44,13 @@
 				</div>
 			</div>
 
-			<div>
-			<button class='btn btn-primary' ng-click='pickFile()'>add pictures</button>
-			</div>
+
+			<div id="filePickerDropPane">Drop files here</div>
+			
 			<div ng-show='newProduct.images.length' ng-repeat='img in newProduct.images'>
 				<img ng-src='{{img}}' class="img-rounded" style='height: 200px'>
 			</div>
-
-			<input type="file" />
-			{{newProduct}}
+			
 			<br />
 
 			<button type='submit' class='btn btn-primary' ng-disabled="addProductForm.$invalid">Add Product</button>
