@@ -12,7 +12,7 @@ angular.module('stackStoreApp')
         method: 'GET'
       },
       updateQuantity : {
-        url: '/api/products',
+        url: '/api/products/qty/:id',
         method: 'PUT'
       }
     });

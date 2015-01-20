@@ -11,7 +11,7 @@ router.get('/:id', controller.show);
 router.get('/search/:query', controller.showMultiple); // idk naming conventions
 router.post('/', auth.hasRole('admin'), controller.create);
 router.put('/:id', auth.hasRole('admin'), controller.update);
-router.put('/', controller.updateQuantity);
+router.put('/qty/:id', controller.updateQuantity);
 router.patch('/:id', controller.update);
 router.delete('/:id', auth.hasRole('admin'), controller.destroy);
 
