@@ -3,7 +3,15 @@
 angular.module('stackStoreApp')
   .controller('ProductViewCtrl', function ($scope, Product, Auth, Order, Review, User, $routeParams, Cart) {
     $scope.cart;
+    // why?  whyyyyyyyyyyyyyyyy
   	$scope.user = Auth.getCurrentUser();
+    if ($scope.user.$promise) {
+        $scope.user.$promise.then(function(user) {
+            $scope.user = user;
+            console.log($scope.user);
+            $scope.newReview.userId = user._id;
+        });
+    }
   	$scope.quantity = 1;
     $scope.isAdmin = Auth.isAdmin;
     $scope.reviews = [];
@@ -23,7 +31,6 @@ angular.module('stackStoreApp')
     });
 
     // ugh this is terrible why am i even
-    var reviews = [];
     Review.query().$promise.then(function(reviews) {
         reviews.forEach(function(review) {
             if(review.productId === $routeParams.id) {
@@ -45,7 +52,8 @@ angular.module('stackStoreApp')
             $scope.starClasses[i] = "";
         }
     }
-    $scope.newReview = {
+
+      $scope.newReview = {
         userId: $scope.user._id,
         productId: $routeParams.id,
         stars: 0,
@@ -54,12 +62,12 @@ angular.module('stackStoreApp')
     }
 
     $scope.postReview = function() {
-        $scope.reviews.push($scope.newReview);
         Review.save($scope.newReview, function(savedReview) {
             $scope.user.reviews.push(savedReview._id);
             User.update($scope.user);
+            $scope.reviews.push(savedReview);
+            $scope.reviewSubmitted = true;
         });
-        $scope.reviewSubmitted = true;
     }
 
     Cart.getCart(function() {
