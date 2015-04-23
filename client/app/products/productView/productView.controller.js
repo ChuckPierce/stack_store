@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('stackStoreApp')
-  .controller('ProductViewCtrl', function ($scope, Product, Auth, Order, Review, User, $routeParams, Cart, $sce) {
+  .controller('ProductViewCtrl', function ($scope, Product, Auth, Order, Review, User, $routeParams, Cart, $sce, $http) {
     $scope.cart;
     // why?  whyyyyyyyyyyyyyyyy
   	$scope.user = Auth.getCurrentUser();
@@ -12,6 +12,7 @@ angular.module('stackStoreApp')
             $scope.newReview.userId = user._id;
         });
     }
+    $scope.recommendations = [];
   	$scope.quantity = 1;
     $scope.isAdmin = Auth.isAdmin;
     $scope.reviews = [];
@@ -20,6 +21,15 @@ angular.module('stackStoreApp')
   	
     Product.get({id: $routeParams.id}, function(product) {
         $scope.product = product;
+        $http.post('http://localhost:3000/'+product._id)
+          .then(function(res){
+            var ids = res.data;
+            angular.forEach(ids, function(id) {
+              Product.get({id: id}).$promise.then(function(prod){
+                $scope.recommendations.push(prod);
+              })
+            });
+          })
     // this doesn't do anything yet bc orders, man
     //     $scope.user.orders.forEach(function(order) {
     //         order.lineItems.forEach(function(lineItem) {

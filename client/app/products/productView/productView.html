@@ -32,7 +32,14 @@
 			</form>
 		</div>	
 	</div>
-
+	<div class="row">
+		<h4>Frequently purchased with:</h4>
+		<div class="col-lg-4 col-md-4 col-sm-4" ng-repeat="rec in recommendations">
+			<a href="/products/{{rec._id}}"><img ng-src="{{rec.images[0]}}" style="height: 50px" />
+			{{rec.name}}</a>
+			{{rec.price | currency}}
+		</div>
+	</div>
 	<div class="row">
 		<div class="col-lg-6 col-md-6 col-sm-12">
 			<h3>Reviews</h3>
